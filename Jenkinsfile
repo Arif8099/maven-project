@@ -13,12 +13,9 @@ pipeline {
             post {
                 success {
                     echo 'Now Archiving...'
-                    archiveArtifacts artifacts: '**/target/*.war'
+                    archiveArtifacts artifacts: 'C:\Arif Files\Jenkins\workspace\package\webapp\target\*.war'
                 }
             }
         }
     }
 }
-
-
-
