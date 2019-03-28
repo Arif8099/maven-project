@@ -1,9 +1,11 @@
 pipeline {
+
     agent any
     
     tools {
         maven 'localMaven'
     }
+
     stages{
         stage('Build'){
             steps {
@@ -16,9 +18,30 @@ pipeline {
                 }
             }
         }
+
         stage('deploy-to-staging'){
             steps {
                 build job: 'deploy-to-staging'
+            }
+        }
+        
+        stage('deploy-to-prod') {
+            steps {
+                timeout(time=5,unit='DAYS'){
+                    input message:'Approve Production Deployement?'
+                }
+
+                build job:'deploy-to-prod'
+            }
+
+            post {
+                success {
+                    echo 'code deployed to production'
+                }
+
+                failure {
+                    echo 'deployement failed'
+                }
             }
         }
     }
